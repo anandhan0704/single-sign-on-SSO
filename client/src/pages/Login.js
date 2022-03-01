@@ -1,9 +1,38 @@
 import Google from "../img/google.png";
 import Facebook from "../img/facebook.png";
 import Github from "../img/github.png";
+import { useEffect, useState } from "react";
+import {Link, useNavigate} from 'react-router-dom'
+import LoginValidation from '../validation/loginValidation'
 
 const Login = () => {
-    
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+  useEffect(() => {
+    const getUser = () => {
+      fetch("http://localhost:5000/auth/login/success", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": true,
+        },
+      })
+        .then((response) => {
+          if (response.status === 200){
+            navigate('/home')
+          }
+        })
+        .then((resObject) => {
+          setUser(resObject.user);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    getUser();
+  }, []);
   const google = () => {
     window.open("http://localhost:5000/auth/google", "_self");
   };
@@ -15,6 +44,10 @@ const Login = () => {
   const facebook = () => {
     window.open("http://localhost:5000/auth/facebook", "_self");
   };
+
+  const handleHome = () => {
+    navigate('/home')
+}
 
   return (
     <div className="login">
@@ -33,19 +66,15 @@ const Login = () => {
             <img src={Github} alt="" className="icon" />
             Github
           </div>
-          <div className="loginButton github" onClick={github}>
-            <img src={Github} alt="" className="icon" />
-            Twitter
-          </div>
         </div>
         <div className="center">
           <div className="line" />
           <div className="or">OR</div>
         </div>
         <div className="right">
-          <input type="text" placeholder="Email" />
-          <input type="text" placeholder="Password" />
-          <button className="submit">Login</button>
+          <input type="text" placeholder="Username" />
+          <input type="password" placeholder="Password" />
+          <button className="submit" onClick={handleHome}>Login</button>
         </div>
       </div>
     </div>
