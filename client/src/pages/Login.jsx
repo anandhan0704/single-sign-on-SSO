@@ -1,16 +1,14 @@
 import Google from "../img/google.png";
 import Facebook from "../img/facebook.png";
 import Github from "../img/github.png";
-import { useEffect, useState } from "react";
-import {Link, useNavigate} from 'react-router-dom'
-import LoginValidation from '../validation/loginValidation'
+import { useEffect} from "react";
+import {useNavigate} from 'react-router-dom'
 
 const Login = () => {
-  const [user, setUser] = useState(null);
   const navigate = useNavigate();
   useEffect(() => {
     const getUser = () => {
-      fetch("http://localhost:5000/auth/login/success", {
+      fetch(`${process.env.REACT_APP_BASE_URL}`+"login/success", {
         method: "GET",
         credentials: "include",
         headers: {
@@ -24,26 +22,24 @@ const Login = () => {
             navigate('/home')
           }
         })
-        .then((resObject) => {
-          setUser(resObject.user);
-        })
         .catch((err) => {
           console.log(err);
         });
     };
     getUser();
   }, []);
+
   const google = () => {
-    window.open("http://localhost:5000/auth/google", "_self");
+    window.open(`${process.env.REACT_APP_BASE_URL}`+"google", "_self");
   };
 
   const github = () => {
-    window.open("http://localhost:5000/auth/github", "_self");
+    window.open(`${process.env.REACT_APP_BASE_URL}`+"github", "_self");
   };
 
-  const facebook = () => {
-    window.open("http://localhost:5000/auth/facebook", "_self");
-  };
+  // const facebook = () => {
+  //   window.open("http://localhost:5000/auth/facebook", "_self");
+  // };
 
   const handleHome = () => {
     navigate('/home')
@@ -58,10 +54,10 @@ const Login = () => {
             <img src={Google} alt="" className="icon" />
             Google
           </div>
-          <div className="loginButton facebook" onClick={facebook}>
+          {/* <div className="loginButton facebook" onClick={facebook}>
             <img src={Facebook} alt="" className="icon" />
             Facebook
-          </div>
+          </div> */}
           <div className="loginButton github" onClick={github}>
             <img src={Github} alt="" className="icon" />
             Github

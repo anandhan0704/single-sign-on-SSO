@@ -3,19 +3,19 @@ const GithubStrategy = require("passport-github2").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
 const TwitterStrategy = require("passport-twitter").Strategy;
 const passport = require("passport");
+require("dotenv").config();
 
-const GOOGLE_CLIENT_ID =
-  "617416192192-imgkjicn42hcubgi95heid5eoovv9gv8.apps.googleusercontent.com";
-const GOOGLE_CLIENT_SECRET = "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";
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 
-GITHUB_CLIENT_ID = "4286d6bb939d979dcf4c";
-GITHUB_CLIENT_SECRET = "91ccc06b4dde4191e28a8d6b765493696476f81d";
+GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
+GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 
-FACEBOOK_APP_ID = "your id";
-FACEBOOK_APP_SECRET = "your id";
+FACEBOOK_APP_ID = "384561776818170";
+FACEBOOK_APP_SECRET = "89b09298b728d15d3a89f02d0030a81b";
 
-TWITTER_CONSUMER_KEY = "wKsB1sGmJUyc5xKuZnyoOnCc5";
-TWITTER_CONSUMER_SECRET = "O2hYGlIOzDWomvdDQ2fSbqOTDESOrn8LO2XSvYwNJKHtYQSIzD";
+TWITTER_CONSUMER_KEY = process.env.TWITTER_CONSUMER_KEY;
+TWITTER_CONSUMER_SECRET = process.env.TWITTER_CONSUMER_SECRET;
 
 passport.use(
   new GoogleStrategy(
@@ -57,15 +57,17 @@ passport.use(
 );
 
 passport.use(
-  new TwitterStrategy({
-  consumerKey: TWITTER_CONSUMER_KEY,
-  consumerSecret: TWITTER_CONSUMER_SECRET,
-  callbackURL: "/auth/twitter/callback"
-},
-function (accessToken, refreshToken, profile, done) {
-  done(null, profile);
-}
-));
+  new TwitterStrategy(
+    {
+      consumerKey: TWITTER_CONSUMER_KEY,
+      consumerSecret: TWITTER_CONSUMER_SECRET,
+      callbackURL: "/auth/twitter/callback",
+    },
+    function (accessToken, refreshToken, profile, done) {
+      done(null, profile);
+    }
+  )
+);
 
 passport.serializeUser((user, done) => {
   done(null, user);
